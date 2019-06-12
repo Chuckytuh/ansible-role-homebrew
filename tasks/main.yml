@@ -32,11 +32,30 @@
     mode: 0775
   become: yes
 
+# Disable Homebrew auto update
+- name: Disable Homebrew auto update (if configured)
+  block:
+
+  - name: Ensure presence of bash_profile
+    file:
+      state: touch
+      path: ~/.bash_profile
+
+  - name: Set HOMEBREW_NO_AUTO_UPDATE environment in bash_profile
+    lineinfile:
+        path: ~/.bash_profile
+        regexp: "export HOMEBREW_NO_AUTO_UPDATE=1"
+        line: "export HOMEBREW_NO_AUTO_UPDATE=1"
+
+  when: homebrew_disable_auto_update
+  become_user: ansible
+  become: yes
+
 # Clone Homebrew.
 - name: Ensure Homebrew is installed.
   git:
     repo: "{{ homebrew_repo }}"
-    version: master
+    version: "{{ homebrew_version }}"
     dest: "{{ homebrew_install_path }}"
     update: no
     depth: 1

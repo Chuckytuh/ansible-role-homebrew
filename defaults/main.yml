@@ -26,3 +26,7 @@ homebrew_use_brewfile: true
 homebrew_brewfile_dir: '~'
 
 homebrew_clear_cache: false
+
+homebrew_disable_auto_update: true
+
+homebrew_version: "2.1.1"
